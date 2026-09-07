@@ -1,9 +1,2 @@
-# Install jarviscore-framework from your local clone in editable mode until
-# the new safaricom_mpesa B2C/B2B atoms are merged/published upstream:
-#   pip install -e ../jarviscore-framework[web]
-# Once the atoms ship in a released PyPI version, switch to:
-#   jarviscore-framework[web]>=<released_version>
-
-fastapi>=0.104.0
-uvicorn>=0.29.0
+jarviscore-framework[web]>=1.8.0
 python-dotenv>=1.0.0

@@ -24,15 +24,13 @@ from jarviscore.profiles import CustomAgent
 from jarviscore.integrations.atoms.whatsapp_business.whatsapp_business_create_message import (
     whatsapp_business_create_message,
 )
-from jarviscore.integrations.atoms.safaricom_mpesa.safaricom_mpesa_create_payout import (
-    safaricom_mpesa_create_payout,
-)
-from jarviscore.integrations.atoms.safaricom_mpesa.safaricom_mpesa_send_to_till import (
-    safaricom_mpesa_send_to_till,
-)
-from jarviscore.integrations.atoms.safaricom_mpesa.safaricom_mpesa_send_to_paybill import (
-    safaricom_mpesa_send_to_paybill,
-)
+# B2C/B2B (send-money) atoms live locally in this project, not in
+# jarviscore-framework — see mpesa_atoms/ for why, and the framework's
+# bundled safaricom_mpesa_create_order (STK Push / pay-in) atom for the
+# convention these follow.
+from mpesa_atoms.mpesa_create_payout import mpesa_create_payout as safaricom_mpesa_create_payout
+from mpesa_atoms.mpesa_send_to_till import mpesa_send_to_till as safaricom_mpesa_send_to_till
+from mpesa_atoms.mpesa_send_to_paybill import mpesa_send_to_paybill as safaricom_mpesa_send_to_paybill
 
 import config
 import pending_store

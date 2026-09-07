@@ -63,10 +63,7 @@ sent to Safaricom (human-in-the-loop). Do not remove this gate.
 cd whatsapp-mpesa-agent
 python3 -m venv .venv && source .venv/bin/activate
 
-# Install jarviscore-framework from your local clone (editable) — the new
-# safaricom_mpesa B2C/B2B atoms aren't published to PyPI yet.
-pip install -e ../jarviscore-framework[web]
-pip install -r requirements.txt
+pip install -r requirements.txt   # installs jarviscore-framework[web] from PyPI
 
 cp .env.example .env
 # fill in .env with your WhatsApp + Daraja sandbox credentials
@@ -97,6 +94,23 @@ yes
 
 You'll get an STK-style acceptance, then a follow-up confirmation once
 Safaricom posts the async result.
+
+## Project layout
+
+- `app.py` — FastAPI app, webhook routes, `JarvisLifespan` wiring
+- `agent.py` — `WhatsAppMpesaAgent(CustomAgent)`: command parsing, confirmation gate, Safaricom dispatch
+- `config.py` — env-var-backed settings (swap for Nexus in production, see below)
+- `pending_store.py` — in-memory conversation/transaction state (swap for Redis in production)
+- `mpesa_atoms/` — B2C (`mpesa_create_payout`) and B2B (`mpesa_send_to_till`,
+  `mpesa_send_to_paybill`) atoms for the Daraja APIs used here. These live in
+  *this* project rather than in `jarviscore-framework` itself: they're plain
+  functions (`auth_info: dict -> dict`), so nothing about calling them
+  requires living inside the framework's package, and keeping them here means
+  no editable/local install of the framework, no CLA, and you can tweak them
+  freely for your own business rules. The framework ships the matching STK
+  Push (pay-in) atom as `safaricom_mpesa_create_order` — see
+  `jarviscore/integrations/atoms/safaricom_mpesa/` in jarviscore-framework —
+  and reusing the framework's PyPI release is enough for this app.
 
 ## Safety notes before production
 
